@@ -192,36 +192,135 @@ import numpy as np
 ### SUMMARIZE
 def summarize_dataset(dataset):
     summaries = [(np.mean(column), np.std(column), len(column)) for column in zip(*dataset)]
+    del(summaries[-1])
     return summaries
+    #print("---------")
+    #print(summaries[-1])
 
-#print(summarize_dataset(dataset))
+#summary = summarize_dataset(dataset)
+#print(summary)
 
 #print(len(dataset))
 
 
 
 ## summarize data by class
-summaries = {}
-for class_value, rows in separated.items():
-    summaries[class_value] = summarize_dataset(rows)
+def summarize_by_class(dataset):
+    summaries = {}
+    for class_value, rows in separated.items():
+        summaries[class_value] = summarize_dataset(rows)
+    return summaries
 
-for label in summaries:
-    print(label)
-    for row in summaries[label]:
-        print(row)
+# for label in summaries:
+#     print(label)
+#     for row in summaries[label]:
+#         print(row)
 
 
 
 
 
 ## gaussian probability density function
+## We assume that X value is drawn from a Gaussian distribution (bell curve)
+
+from math import sqrt, pi, exp
+
+def calculate_probability(x, mean, std):
+    exponent = exp(-((x-mean)**2/(2*std**2)))
+    return (1/(sqrt(2*pi)*std)) * exponent
+
+## This is an example bell curve with mean of 1, std of 1.
+## The likelihood that the x is 2 or 0 is .24
+#print(calculate_probability(2.0, 1.0, 1.0))
+
+
 
 
 
 ## class probabilities
+# P(class|data) = P(X|class) * P(class)
+# the probability that it's a certain class given data is the probility that it's X given the class
+#  multiplied by the probability that it's that  class
+# NOTE: the division is removed, because it's redundant when you're comparing across classes
 
 
+def calculate_class_probabilities(summaries, row):
+    total_rows = sum([summaries[label][0][2] for label in summaries])
+    probabilities = {}
+    for class_value, class_summaries in summaries.items():
+        probabilities[class_value] = summaries[class_value][0][2]/float(total_rows)
+        for i in range(len(class_summaries)):
+            mean, std, count = class_summaries[i]
+            probabilities[class_value] *= calculate_probability(row[i], mean, std)
+    return probabilities
+
+#probabilities = calculate_class_probabilities(summaries, dataset[0])
+
+#print(dataset[0])
+#print(probabilities)
+
+
+def predict(summaries, row):
+    probabilities = calculate_class_probabilities(summaries, row)
+    best_label, best_prob = None, -1
+    for class_value, probability in probabilities.items():
+        if best_label is None or probability > best_prob:
+            best_prob = probability
+            best_label = class_value
+    return best_label
+
+
+# prediction = predict(summaries, dataset[0])
+# print(prediction)
+# print(dataset[0])
 
 
 ## put it all together in a more readable way
 ## put it all into a class!!
+
+
+# from sklearn.model_selection import train_test_split
+
+
+# #print(type(dataset))
+
+# #create a y target
+# y = []
+# for row in dataset:
+#     y.append([row.pop(-1)])
+#     #row.remove([-1])
+
+# X= dataset
+# print(y)
+# #print(X)
+
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=0)
+
+# #print(X_train)
+#print(type(X_train))
+
+# print(y_train)
+# print(type(y_train))
+# print(len(y_train))
+
+# print(y_train[0])
+
+
+# print(len(dataset))
+# for row in dataset:
+#     print(row)
+
+
+
+def naive_bayes(train, test):
+    summarize = summarize_by_class(train)
+    predictions = []
+    for row in test:
+        print(row)
+        output = predict(summarize, row)
+        predictions.append(output)
+    return predictions
+
+
+
+#naive_bayes(X, y)
