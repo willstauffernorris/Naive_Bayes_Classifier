@@ -2,33 +2,6 @@ from sklearn_vs_will import X_train, X_test, y_train, y_test
 import numpy as np
 from math import sqrt, pi, exp
 
-class Gaussian_Naive_Bayes():
-    def __init__(self, priors=None):
-        # this is the prior probability- crux of Bayes theorem
-        self.priors = priors
-
-        #also need variable smoothing, but I'm not sure what that is yet
-        #self.variable_smoothing
-    
-    ## Take in X features and y target and build a model
-    def fit(self, X, y):
-        '''
-        X is a numpy array. It's the training features.
-        y is a numpy array. It's the training target.
-        '''
-        self.X = X
-        self.y = y
-    
-    ## Makes a prediction for the y target class, based on the X test 
-    def predict(self, X):
-        '''
-        X is a numpy array. It's the test features.
-        This function will return the predicted test target.
-        '''
-        #return pred_target
-        pass
-
-
 
 ## Merging the X_train and y_train back together
 i = 0
@@ -46,7 +19,7 @@ def separate_by_class(data):
     # creating a dictionary; each key is one of the possible classes
     separated = {}
     for i in range(len(data)):
-        row = dataset[i]
+        row = data[i]
         class_value = row[-1]
         if class_value not in separated:
             separated[class_value] = []

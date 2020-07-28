@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
-from bayes import Gaussian_Naive_Bayes
+from class2 import Gaussian_Naive_Bayes
 import numpy as np
 from csv import reader
 
@@ -58,12 +58,12 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_
 
 ### do a gaussian naive bayes on the iris dataset (SKLEARN)
 gnb = GaussianNB()
-#y_pred = gnb.fit(X_train, y_train).predict(X_test)
+# y_pred = gnb.fit(X_train, y_train).predict(X_test)
 gnb.fit(X_train, y_train)
 y_pred = gnb.predict(X_test)
 #print(y_pred)
 
-#print("SKLEARN: Number of mislabeled points out of a total %d points : %d" % (len(X_test), (y_test != y_pred).sum()))
+print("SKLEARN: Number of mislabeled points out of a total %d points : %d" % (len(X_test), (y_test != y_pred).sum()))
 
 ### do a gaussian naive bayes on the iris dataset(MINE!)
 
@@ -71,6 +71,16 @@ wills_gaussian = Gaussian_Naive_Bayes()
 
 wills_gaussian.fit(X_train, y_train)
 
+
 y_pred = wills_gaussian.predict(X_test)
 
-#print("WILL'S VERSION: Number of mislabeled points out of a total %d points : %d" % (len(X_test), (y_test != y_pred).sum()))
+## number incorrect
+number_incorrect = 0
+for i in range(len(y_test)):
+    if y_test[i] != y_pred[i]:
+        number_incorrect += 1
+
+accuracy = (len(y_test)-number_incorrect)/len(y_test)*100
+
+print(f'ACCURACY: {round(accuracy,2)}%')
+print(f'WILL"S VERSION: OUT OF {len(y_test)} POINTS, {number_incorrect} ARE INCORRECT.')
