@@ -1,5 +1,8 @@
 # Creating a Naive Bayes Classifier from scratch
 
+Read on Medium here:
+https://medium.com/@willstauffernorris/creating-a-naive-bayes-classifier-from-scratch-f3df2b398d0e
+
 As a data scientist, it’s fairly simple to bring in a huge number of tools with one very simple line of code. If I want to try running a simple classifier on a dataset, I quickly type:
 
 ```
@@ -26,7 +29,32 @@ P(class) is the is the prior probability. Regardless of the given data, if that 
 P(data) is the probability of observing the data. For this classifier, we'll ignore this denominator because it's constant as we compare one data point across different classes.
 
 
-We will use this theorem to figure out the probability that a data point belongs to a certain class.
+I understand it better with examples. Say you have symptoms of a rare cancer, and everyone who has this cancer has this symptom. How likely is it that you have the cancer?
+
+```
+P(Cancer|Symptoms) = P(Symptoms|Cancer)*P(Cancer)/P(Symptoms)
+```
+
+P(Symptoms|Cancer) = 1. The probability that you have symptoms given that you have the rare cancer is 100%
+
+P(Cancer) = 1/1000. This is a rare cancer, so chances are you don't have it.
+
+P(Symptoms) = P(Symptoms|Cancer) * P(Cancer) + P(Symptoms|Non-cancer) * P(Non-cancer)
+
+The first part is the same as above, then we must add the probability that you have the symptoms if you don't have cancer (1/100) multiplied by the probability that you don't have the rare cancer (999/1000)
+
+This adds up to:
+
+```
+1 * .001 / 1 * .001 + .01 * .999
+
+== .001 / .01099
+
+== .09 ## Nine percent
+```
+
+
+We will use Bayes Theorem to figure out the probability that a data point belongs to a certain class.
  
 
 ## Plan
