@@ -35,19 +35,12 @@ def string_to_int(dataset, column):
 
 string_to_int(dataset, len(dataset[0])-1)
 
-
-# for row in dataset:
-#     print(row)
-
-
 #create a y target and X features
 y = []
 for row in dataset:
     y.append(row.pop(-1))
 
 X= dataset
-
-
 
 ## Train test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=0)
@@ -58,20 +51,14 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_
 
 ### do a gaussian naive bayes on the iris dataset (SKLEARN)
 gnb = GaussianNB()
-# y_pred = gnb.fit(X_train, y_train).predict(X_test)
 gnb.fit(X_train, y_train)
 y_pred = gnb.predict(X_test)
-#print(y_pred)
 
 print("SKLEARN: Number of mislabeled points out of a total %d points : %d" % (len(X_test), (y_test != y_pred).sum()))
 
 ### do a gaussian naive bayes on the iris dataset(MINE!)
-
 wills_gaussian = Gaussian_Naive_Bayes()
-
 wills_gaussian.fit(X_train, y_train)
-
-
 y_pred = wills_gaussian.predict(X_test)
 
 ## number incorrect
@@ -79,7 +66,7 @@ number_incorrect = 0
 for i in range(len(y_test)):
     if y_test[i] != y_pred[i]:
         number_incorrect += 1
-
+## accuracy
 accuracy = (len(y_test)-number_incorrect)/len(y_test)*100
 
 print(f'ACCURACY: {round(accuracy,2)}%')
