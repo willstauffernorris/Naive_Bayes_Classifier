@@ -14,18 +14,24 @@ The first step was to understand what’s actually going on.
 
 The Naive Bayes Classifier is a simple supervised machine learning algorithm that can predict which class a given data point will belong to. It's simplicity means that it's fast, so it works well on large dataset. It also geralizes well (underfits). The "naive" is due to it's assumption of independece of the features in a dataset. This is not usually true in real life, but it simplifies the algorithm and tends to work well in real datasets.
 
-(put this in Latex)
 ```
 P(class|data) = (P(data|class) * P(class)) / P(data)
 ```
-P(class) is the probability that the given data point is in a certain class.
+P(class|data) is the probability that the given data point is in a certain class. Eventually, we want to find the class with the highest probability.
 
-(improve this section)
+P(data|class) is the probabily that the data exists in the given class.
 
+P(class) is the is the prior probability. Regardless of the given data, if that class represents 30% of the data, then this will be 30%.
+
+P(data) is the probability of observing the data. For this classifier, we'll ignore this denominator because it's constant as we compare one data point across different classes.
+
+
+We will use this theorem to figure out the probability that a data point belongs to a certain class.
+ 
 
 ## Plan
-
-After reading through the conceptual ideas behind the Naive Bayes Classifier, I was ready to dive into the code. 
+ 
+After reading through the conceptual ideas behind the Naive Bayes Classifier, I was ready to dive into the planning process. 
 
 In this 'Plan' phase, I focused on translating the abstract math into pseudocode to form an outline of my algorithm. 
 
@@ -60,18 +66,13 @@ This normal distribution of probability will help in our final step.
 
 Remember Baye's Theorem above? We're going to put it in code.
 
-
+```
 P(class=1|attribute=A, attribute=B) = P(attribute=A|class=1) * P(attribute=B|class=1)* P(class=1)
+```
 
-The probability of that data is class 1, given its two attributes, is equal to the probabilty that 
+This is slightly different from the first formula, becuase we're comparing the probability that the data belongs to each class to each other class, rather than the raw probability (i.e. we remove the denominator).
 
-of ??? 
-
-multiplied by the probability that it's in the class.
-
-This is slightly different from the first formula, becuase we're comparing the probability that the data belongs to each class to each other class, rather than the raw probability (ie we remove the denominator).
-
-(improve this)
+This formula also calls out specific attributes. In most datasets, there is more than one attribute - there can be hundreds. We have to calculate the probabilities for each attribute in each class.
 
 ## 6. Calculate probilities for each data point in the test set.
 
@@ -106,7 +107,7 @@ Depending on the random seed picked in the train/test split, my classifier perfo
 ## Reflect
 
 After figuring out the basics using the Iris dataset, I tried with a harder datset: classifying stars based on a large number of features. 
-<link to dataset>
+
 https://www.kaggle.com/deepu1109/star-dataset
 
 This dataset has six possible classifications- but only 240 data points, which is a tiny dataset for training. The Naive Bayes classifier still managed to classify most of the test data correctly, with a 85% accuracy.
